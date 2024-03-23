@@ -1,0 +1,13 @@
+[Unit]
+Description=Kick the aioblescan package to kickstart bluetooth
+After=multi-user.target bluetooth.target magicbox.target
+
+[Service]
+User=steve
+WorkingDirectory=/home/steve/aioblescan
+Type=idle
+Restart=always
+ExecStart=/usr/bin/python -m aioblescan
+
+[Install]
+WantedBy=multi-user.target
