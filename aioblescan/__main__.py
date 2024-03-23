@@ -62,19 +62,19 @@ def my_process(data):
         if not goon:
             return
 
-    if opts.raw:
-        print("Raw data: {}".format(ev.raw_data))
-    if decoders:
-        for leader, decoder in decoders:
-            xx = decoder.decode(ev)
-            if xx:
-                if opts.leader:
-                    print(f"{leader} {json.dumps(xx)}")
-                else:
-                    print(f"{json.dumps(xx)}")
-                break
-    else:
-        ev.show(0)
+    #if opts.raw:
+    #    print("Raw data: {}".format(ev.raw_data))
+    #if decoders:
+    #    for leader, decoder in decoders:
+    #        xx = decoder.decode(ev)
+    #        if xx:
+    #            if opts.leader:
+    #                print(f"{leader} {json.dumps(xx)}")
+    #            else:
+    #                print(f"{json.dumps(xx)}")
+    #            break
+    #else:
+    #    ev.show(0)
 
 
 async def amain(args=None):
@@ -112,16 +112,20 @@ async def amain(args=None):
         command = aiobs.HCI_Cmd_LE_Advertise(enable=True)
         await btctrl.send_command(command)
     # Probe
+    print('starting')
+    await btctrl.send_scan_request()
+    print('starting')
+    await btctrl.stop_scan_request()
+    print('restarting')
     await btctrl.send_scan_request()
     try:
-        while True:
-            await asyncio.sleep(3600)
+        await asyncio.sleep(30)
     except KeyboardInterrupt:
         print("keyboard interrupt")
     finally:
         print("closing event loop")
         # event_loop.run_until_complete(btctrl.stop_scan_request())
-        await btctrl.stop_scan_request()
+        #await btctrl.stop_scan_request()
         command = aiobs.HCI_Cmd_LE_Advertise(enable=False)
         await btctrl.send_command(command)
         conn.close()
