@@ -114,7 +114,7 @@ async def amain(args=None):
     # Probe
     print('starting')
     await btctrl.send_scan_request()
-    print('starting')
+    print('stopping')
     await btctrl.stop_scan_request()
     print('restarting')
     await btctrl.send_scan_request()
